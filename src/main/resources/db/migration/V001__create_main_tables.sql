@@ -12,19 +12,20 @@ $$
 
         create table if not exists ontology
         (
-            id  bigserial not null
+            id   bigserial not null
                 constraint ontology_pkey
                     primary key,
-            iri text unique
+            iri  text unique,
+            name text unique
         );
 
         create table if not exists ontology_prefix
         (
-            id   bigserial not null
+            id          bigserial not null
                 constraint ontology_prefix_pkey
                     primary key,
-            name text,
-            iri  text,
+            name        text,
+            iri         text,
             ontology_id bigserial
                 constraint class_ontology_ref
                     references ontology

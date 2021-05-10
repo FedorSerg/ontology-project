@@ -1,4 +1,4 @@
-package ru.ontology.swagger.config;
+package ru.ontology.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

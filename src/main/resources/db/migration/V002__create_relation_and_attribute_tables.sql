@@ -38,16 +38,35 @@ $$
 
         create table if not exists relation
         (
-            id        bigserial not null
+            id               bigserial not null
                 constraint relation_pkey
                     primary key,
-            name      text unique,
-            domain_id bigserial
+            name             text unique,
+            domain_id        bigserial
                 constraint relation_domain_ref
                     references class,
-            range_id  bigserial
+            range_id         bigserial
                 constraint relation_range_ref
-                    references class
+                    references class,
+            superrelation_id bigserial
+                constraint relation_superrelation_ref
+                    references relation
+        );
+
+        create table if not exists relation_for_instances
+        (
+            id          bigserial not null
+                constraint relation_for_instances_pkey
+                    primary key,
+            relation_id bigserial
+                constraint relation_for_instances_relation_ref
+                    references relation,
+            domain_id   bigserial
+                constraint relation_for_instances_domain_ref
+                    references instance,
+            range_id    bigserial
+                constraint relation_for_instances_range_ref
+                    references instance
         );
 
     EXCEPTION

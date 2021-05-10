@@ -53,6 +53,53 @@ paths:
         "500":
           description: Internal Server Error
 
+  /api/v1/ontology/file:
+    post:
+      tags:
+        [ ontology ]
+      operationId: uploadOntologyOwlXml
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+
+  /api/v1/ontology/{ontologyId}/file:
+    get:
+      tags:
+        [ ontology ]
+      operationId: downloadOntologyOwlXml
+      parameters:
+        - name: ontologyId
+          in: path
+          description: ontology id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          description: Internal Server Error
+
 components:
   schemas:
     OntologyViewDto:

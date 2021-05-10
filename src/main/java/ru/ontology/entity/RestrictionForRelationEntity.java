@@ -14,20 +14,20 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "restriction",
+@Table(name = "restriction_relation",
         uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RestrictionEntity {
+public class RestrictionForRelationEntity {
 
     @Id
-    @SequenceGenerator(name = "restriction_id_seq",
-            sequenceName = "restriction_id_seq",
+    @SequenceGenerator(name = "restriction_relation_id_seq",
+            sequenceName = "restriction_relation_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "restriction_id_seq")
+            generator = "restriction_relation_id_seq")
     private Long id;
 
     private String name;
