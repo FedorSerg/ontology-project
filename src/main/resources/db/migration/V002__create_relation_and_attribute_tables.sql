@@ -22,16 +22,16 @@ $$
                     references class
         );
 
-        create table if not exists value
+        create table if not exists attribute_value
         (
             id           bigserial not null
-                constraint value_pkey
+                constraint attribute_value_pkey
                     primary key,
             attribute_id bigserial
-                constraint value_attribute_ref
+                constraint attribute_value_attribute_ref
                     references attribute,
             instance_id  bigserial
-                constraint value_instance_ref
+                constraint attribute_value_instance_ref
                     references instance,
             value        text
         );
