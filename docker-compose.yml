@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  db:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_DB: ontologydb
+      POSTGRES_USER: ontuser
+      POSTGRES_PASSWORD: ontpass
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080

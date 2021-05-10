@@ -1,0 +1,100 @@
+# API-first development with OpenAPI
+# This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
+openapi: '3.0.3'
+info:
+  title: Ontology API
+  description: This is a really important thing
+  version: 1.2.1
+servers:
+  - url: ''
+paths:
+  /api/ontologies:
+    get:
+      tags:
+        [ ontology ]
+      operationId: getOntologyList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OntologyListDto'
+        "500":
+          description: Internal Server Error
+
+  /api/classes:
+    get:
+      tags:
+        [ class ]
+      operationId: getClassList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassListDto'
+        "500":
+          description: Internal Server Error
+
+  /api/attributes:
+    get:
+      tags:
+        [ attribute ]
+      operationId: getAttributeList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeListDto'
+        "500":
+          description: Internal Server Error
+
+components:
+  schemas:
+    OntologyViewDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        iri:
+          type: string
+
+    OntologyListDto:
+      type: array
+      items:
+        $ref: '#/components/schemas/OntologyViewDto'
+
+    ClassViewDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    ClassListDto:
+      type: array
+      items:
+        $ref: '#/components/schemas/ClassViewDto'
+
+    AttributeViewDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    AttributeListDto:
+      type: array
+      items:
+        $ref: '#/components/schemas/AttributeViewDto'

@@ -1,0 +1,22 @@
+logging:
+  level:
+    io:
+      swagger:
+        models:
+          parameters:
+            AbstractSerializableParameter: ERROR
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    hibernate:
+      ddl-auto: validate
+
+  datasource: # see docker-compose.yml in project root
+    url: jdbc:postgresql://localhost:5432/ontologydb
+    username: ontuser
+    password: ontpass
