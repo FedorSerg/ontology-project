@@ -16,5 +16,9 @@ public class CompleteOntologyDto {
 
     private List<ClassDto> classes;
     private List<AttributeDto> attributes;
+    private List<AttributeValueDto> attributeValues;
     private List<RelationDto> relations;
+    private List<RelationInstanceDto> relationInstances;
+    private List<InstanceDto> instances;
+    private List<RestrictionRelationDto> relationRestrictions;
 }

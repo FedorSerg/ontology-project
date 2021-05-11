@@ -10,8 +10,8 @@ import ru.ontology.entity.AttributeRangeType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AttributeDto {
-    private String name;
-    private ClassDto domain;
-    private AttributeRangeType rangeType;
+public class AttributeValueDto {
+    private AttributeDto attribute;
+    private InstanceDto instance;
+    private String value;
 }

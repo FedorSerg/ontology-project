@@ -41,8 +41,4 @@ public class RelationEntity {
     @ManyToOne
     @JoinColumn(name = "range_id")
     private ClassEntity range;
-
-    @ManyToOne
-    @JoinColumn(name = "superrelation_id")
-    private RelationEntity superrelation;
 }

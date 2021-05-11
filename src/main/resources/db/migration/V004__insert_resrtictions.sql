@@ -11,7 +11,9 @@ $$
         RAISE NOTICE 'Start of % ...', lScriptName;
 
         insert into restriction_attribute(name)
-        values ('DataHasValue');
+        values ('DataHasValue'),
+               ('DataMinCardinality'),
+               ('DataMaxCardinality');
 
         insert into restriction_relation(name)
         values ('ObjectMinCardinality'),

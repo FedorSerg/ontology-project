@@ -47,25 +47,22 @@ $$
                     references class,
             range_id         bigserial
                 constraint relation_range_ref
-                    references class,
-            superrelation_id bigserial
-                constraint relation_superrelation_ref
-                    references relation
+                    references class
         );
 
-        create table if not exists relation_for_instances
+        create table if not exists relation_instance
         (
             id          bigserial not null
-                constraint relation_for_instances_pkey
+                constraint relation_instance_pkey
                     primary key,
             relation_id bigserial
-                constraint relation_for_instances_relation_ref
+                constraint relation_instance_relation_ref
                     references relation,
             domain_id   bigserial
-                constraint relation_for_instances_domain_ref
+                constraint relation_instance_domain_ref
                     references instance,
             range_id    bigserial
-                constraint relation_for_instances_range_ref
+                constraint relation_instance_range_ref
                     references instance
         );
 

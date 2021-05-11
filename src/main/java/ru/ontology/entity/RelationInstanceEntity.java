@@ -15,18 +15,18 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "relation_for_instances")
+@Table(name = "relation_instance")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RelationForInstancesEntity {
+public class RelationInstanceEntity {
     @Id
-    @SequenceGenerator(name = "relation_for_instances_id_seq",
-            sequenceName = "relation_for_instances_id_seq",
+    @SequenceGenerator(name = "relation_instance_id_seq",
+            sequenceName = "relation_instance_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "relation_for_instances_id_seq")
+            generator = "relation_instance_id_seq")
     private Long id;
 
     @ManyToOne
