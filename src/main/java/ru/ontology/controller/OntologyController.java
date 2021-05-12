@@ -25,7 +25,7 @@ public class OntologyController implements OntologyApi {
     @Override
     public ResponseEntity<List<OntologyViewDto>> getOntologyList() {
         return ResponseEntity.of(Optional.of(
-                Collections.singletonList(new OntologyViewDto().name("test"))
+                service.getOntologyList()
         ));
     }
 

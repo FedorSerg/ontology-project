@@ -1,6 +1,7 @@
 package ru.ontology.service.project;
 
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.OntologyViewDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,16 @@ public class OntologyService {
     private final AttributeValueRepository attributeValueRepository;
     private final RelationRepository relationRepository;
     private final RelationInstanceRepository relationInstanceRepository;
+
+    @Transactional(readOnly = true)
+    public List<OntologyViewDto> getOntologyList() {
+        return ontologyRepository.findAll().stream()
+                .map(x -> new OntologyViewDto()
+                        .id(x.getId())
+                        .name(x.getName())
+                        .iri(x.getIri()))
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void uploadOntology(MultipartFile file) {
@@ -146,5 +157,4 @@ public class OntologyService {
                 .collect(Collectors.toList());
         attributeValueRepository.saveAll(attributeValueEntities);
     }
-
 }
