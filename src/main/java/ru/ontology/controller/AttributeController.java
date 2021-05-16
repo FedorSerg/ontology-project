@@ -17,7 +17,7 @@ import java.util.Optional;
 public class AttributeController implements AttributeApi {
 
     @Override
-    public ResponseEntity<List<AttributeViewDto>> getAttributeList() {
+    public ResponseEntity<List<AttributeViewDto>> getAttributeList(Long ontologyId) {
         return ResponseEntity.of(Optional.of(
                 Collections.singletonList(new AttributeViewDto().name("test"))
         ));

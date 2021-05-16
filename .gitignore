@@ -23,5 +23,7 @@
 hs_err_pid*
 
 # Generated files
+*.iml
+*.ipr
 .idea/
 /target/

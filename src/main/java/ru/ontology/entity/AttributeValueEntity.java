@@ -15,7 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "value")
+@Table(name = "attribute_value")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,11 +23,11 @@ import javax.persistence.Table;
 public class AttributeValueEntity {
 
     @Id
-    @SequenceGenerator(name = "value_id_seq",
-            sequenceName = "value_id_seq",
+    @SequenceGenerator(name = "attribute_value_id_seq",
+            sequenceName = "attribute_value_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "value_id_seq")
+            generator = "attribute_value_id_seq")
     private Long id;
 
     @ManyToOne

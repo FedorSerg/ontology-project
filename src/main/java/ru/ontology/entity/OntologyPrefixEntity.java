@@ -9,27 +9,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "restriction",
-        uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "ontology_prefix")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RestrictionEntity {
+public class OntologyPrefixEntity {
 
     @Id
-    @SequenceGenerator(name = "restriction_id_seq",
-            sequenceName = "restriction_id_seq",
+    @SequenceGenerator(name = "ontology_prefix_id_seq",
+            sequenceName = "ontology_prefix_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "restriction_id_seq")
+            generator = "ontology_prefix_id_seq")
     private Long id;
 
     private String name;
 
+    private String iri;
+
+    @ManyToOne
+    @JoinColumn(name = "ontology_id")
+    private OntologyEntity ontology;
 }

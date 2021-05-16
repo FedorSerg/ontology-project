@@ -10,21 +10,15 @@ $$
     BEGIN
         RAISE NOTICE 'Start of % ...', lScriptName;
 
-        create table if not exists restriction_attribute
-        (
-            id   bigserial not null
-                constraint restriction_attribute_pkey
-                    primary key,
-            name text unique
-        );
+        insert into restriction_attribute(name)
+        values ('DataHasValue'),
+               ('DataMinCardinality'),
+               ('DataMaxCardinality');
 
-        create table if not exists restriction_relation
-        (
-            id   bigserial not null
-                constraint restriction_relation_pkey
-                    primary key,
-            name text unique
-        );
+        insert into restriction_relation(name)
+        values ('ObjectMinCardinality'),
+               ('ObjectMaxCardinality'),
+               ('ObjectExactCardinality');
 
     EXCEPTION
         WHEN OTHERS
