@@ -29,7 +29,7 @@
         <junit-testcontainer.version>1.13.0</junit-testcontainer.version>
         <junit-testcontainer-postgresql.version>1.13.0</junit-testcontainer-postgresql.version>
         <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
-        <openapi-generator-maven-plugin.version>4.2.1</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>5.1.0</openapi-generator-maven-plugin.version>
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
