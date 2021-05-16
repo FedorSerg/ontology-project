@@ -5,6 +5,7 @@ import org.openapitools.model.AttributeValueViewDto;
 import org.openapitools.model.InstanceViewDto;
 import org.openapitools.model.RelationInstanceViewDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ontology.entity.InstanceEntity;
 import ru.ontology.repository.AttributeValueRepository;
 import ru.ontology.repository.InstanceRepository;
@@ -20,6 +21,7 @@ public class InstanceService {
     private final AttributeValueRepository attributeValueRepository;
     private final RelationInstanceRepository relationInstanceRepository;
 
+    @Transactional(readOnly = true)
     public List<InstanceViewDto> getInstanceList(Long ontologyId) {
         List<InstanceEntity> instancesOfOntology = instanceRepository.findAll().stream()
                 .filter(x -> x.getTypeClass().getOntology().getId().equals(ontologyId))
