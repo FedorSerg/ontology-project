@@ -29,6 +29,7 @@ public class InstanceService {
 
         return instancesOfOntology.stream()
                 .map(x -> new InstanceViewDto()
+                        .id(x.getId())
                         .name(x.getName())
                         .classType(x.getTypeClass().getName())
                         .attributes(attributeValueRepository.findAll().stream()
