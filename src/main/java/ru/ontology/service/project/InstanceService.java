@@ -14,6 +14,7 @@ import ru.ontology.repository.ClassRepository;
 import ru.ontology.repository.InstanceRepository;
 import ru.ontology.repository.RelationInstanceRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -57,6 +58,7 @@ public class InstanceService {
                 .collect(Collectors.toList());
 
         return instancesOfOntology.stream()
+                .sorted(Comparator.comparing(InstanceEntity::getId))
                 .map(this::mapToView)
                 .collect(Collectors.toList());
     }
