@@ -52,6 +52,16 @@ public class OntologyService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public OntologyViewDto getOntologyById(Long ontologyId) {
+
+        OntologyEntity ontologyEntity = ontologyRepository.findById(ontologyId).orElseThrow(NoSuchElementException::new);
+        return new OntologyViewDto()
+                .id(ontologyEntity.getId())
+                .name(ontologyEntity.getName())
+                .iri(ontologyEntity.getIri());
+    }
+
     @Transactional
     public void uploadOntology(MultipartFile file) {
         CompleteOntologyDto ontologyDto;

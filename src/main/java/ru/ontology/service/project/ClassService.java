@@ -10,6 +10,8 @@ import ru.ontology.repository.AttributeRepository;
 import ru.ontology.repository.ClassRepository;
 import ru.ontology.repository.RelationRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,25 +28,44 @@ public class ClassService {
                 .collect(Collectors.toList());
 
         return classesOfOntology.stream()
-                .map(x -> new ClassViewDto()
-                        .id(x.getId())
-                        .name(x.getName())
-                        .superclassName(x.getSuperclasses().stream()
-                                .map(ClassEntity::getName)
-                                .collect(Collectors.joining(", ")))
-                        .attributes(attributeRepository.findAll().stream()
-                                .filter(y -> y.getDomain().getName().equals(x.getName()))
-                                .map(y -> new AttributeViewDto()
-                                        .id(y.getId())
-                                        .name(y.getName())
-                                ).collect(Collectors.toList()))
-                        .relations(relationRepository.findAll().stream()
-                                .filter(y -> y.getDomain().getName().equals(x.getName()))
-                                .map(y -> new RelationViewDto()
-                                        .name(y.getName())
-                                        .domain(y.getDomain().getName())
-                                        .range(y.getRange().getName())
-                                ).collect(Collectors.toList()))
-                ).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClassEntity::getId))
+                .map(this::mapToView)
+                .collect(Collectors.toList());
+    }
+
+    private ClassViewDto mapToView(ClassEntity classEntity) {
+        List<Long> classAndItsSuperclassesIds = getAllSuperclassesIds(classEntity);
+
+        return new ClassViewDto()
+                .id(classEntity.getId())
+                .name(classEntity.getName())
+                .superclassName(classEntity.getSuperclasses().stream()
+                        .map(ClassEntity::getName)
+                        .collect(Collectors.joining(", ")))
+                .attributes(attributeRepository.findAll().stream()
+                        .filter(y -> classAndItsSuperclassesIds.contains(y.getDomain().getId()))
+                        .map(y -> new AttributeViewDto()
+                                .id(y.getId())
+                                .name(y.getName())
+                                .range(y.getRange().toString().toLowerCase())
+                        ).collect(Collectors.toList()))
+                .relations(relationRepository.findAll().stream()
+                        .filter(y -> classAndItsSuperclassesIds.contains(y.getDomain().getId()))
+                        .map(y -> new RelationViewDto()
+                                .name(y.getName())
+                                .domain(y.getDomain().getName())
+                                .range(y.getRange().getName())
+                        ).collect(Collectors.toList()));
+    }
+
+    private List<Long> getAllSuperclassesIds(ClassEntity theClass) {
+        List<Long> result = new ArrayList<>();
+        if (theClass.getSuperclasses() != null) {
+            for (ClassEntity superclass : theClass.getSuperclasses()) {
+                result.addAll(getAllSuperclassesIds(superclass));
+            }
+        }
+        result.add(theClass.getId());
+        return result;
     }
 }

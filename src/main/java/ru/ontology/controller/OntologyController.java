@@ -23,6 +23,13 @@ public class OntologyController implements OntologyApi {
     private final OntologyService service;
 
     @Override
+    public ResponseEntity<OntologyViewDto> getOntologyById(Long ontologyId) {
+        return ResponseEntity.of(Optional.of(
+                service.getOntologyById(ontologyId)
+        ));
+    }
+
+    @Override
     public ResponseEntity<List<OntologyViewDto>> getOntologyList() {
         return ResponseEntity.of(Optional.of(
                 service.getOntologyList()

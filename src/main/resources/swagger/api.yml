@@ -8,6 +8,31 @@ info:
 servers:
   - url: ''
 paths:
+  /api/ontology/{ontologyId}:
+    get:
+      tags:
+        [ ontology ]
+      operationId: getOntologyById
+      parameters:
+        - name: ontologyId
+          in: path
+          description: ontology id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OntologyViewDto'
+        "500":
+          description: Internal Server Error
+
   /api/ontologies:
     get:
       tags:
@@ -48,31 +73,6 @@ paths:
         "500":
           description: Internal Server Error
 
-  /api/ontology/{ontologyId}/attributes:
-    get:
-      tags:
-        [ attribute ]
-      operationId: getAttributeList
-      parameters:
-        - name: ontologyId
-          in: path
-          description: ontology id
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AttributeListDto'
-        "500":
-          description: Internal Server Error
-
   /api/ontology/{ontologyId}/instances:
     get:
       tags:
@@ -95,6 +95,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstanceListDto'
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+        [ instance ]
+      summary: Create instance
+      description: Create new instance
+      operationId: createInstance
+      parameters:
+        - name: ontologyId
+          in: path
+          description: ontology id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Instance body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceCreateUpdateDto'
+      responses:
+        "200":
+          description: OK
         "500":
           description: Internal Server Error
 
@@ -188,35 +215,6 @@ paths:
           schema:
             type: integer
             format: int64
-      responses:
-        "200":
-          description: OK
-        "500":
-          description: Internal Server Error
-
-  /api/ontology/{ontologyId}/instances/:
-    post:
-      tags:
-        [ instance ]
-      summary: Create instance
-      description: Create new instance
-      operationId: createInstance
-      parameters:
-        - name: ontologyId
-          in: path
-          description: ontology id
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        description: Instance body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InstanceCreateUpdateDto'
       responses:
         "200":
           description: OK
@@ -320,6 +318,8 @@ components:
           format: int64
         name:
           type: string
+        range:
+          type: string
 
     RelationViewDto:
       type: object
@@ -333,11 +333,6 @@ components:
           type: string
         range:
           type: string
-
-    AttributeListDto:
-      type: array
-      items:
-        $ref: '#/components/schemas/AttributeViewDto'
 
     InstanceViewDto:
       type: object
