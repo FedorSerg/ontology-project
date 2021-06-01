@@ -21,6 +21,12 @@ public class InstanceController implements InstanceApi {
     private final InstanceService service;
 
     @Override
+    public ResponseEntity<Void> createInstance(Long ontologyId, @Valid InstanceCreateUpdateDto instanceCreateUpdateDto) {
+        service.createInstance(instanceCreateUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<InstanceViewDto>> getInstanceList(Long ontologyId) {
         return ResponseEntity.of(Optional.of(
                 service.getInstanceList(ontologyId)
@@ -32,12 +38,6 @@ public class InstanceController implements InstanceApi {
         return ResponseEntity.of(Optional.of(
                 service.getInstanceById(instanceId)
         ));
-    }
-
-    @Override
-    public ResponseEntity<Void> createInstance(Long ontologyId, @Valid InstanceCreateUpdateDto instanceCreateUpdateDto) {
-        service.createInstance(instanceCreateUpdateDto);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

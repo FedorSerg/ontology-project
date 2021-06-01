@@ -12,14 +12,17 @@ $$
 
         create table if not exists attribute
         (
-            id        bigserial not null
+            id          bigserial not null
                 constraint attribute_pkey
                     primary key,
-            name      text unique,
-            range     text,
-            domain_id bigserial
+            name        text unique,
+            range       text,
+            domain_id   bigserial
                 constraint attribute_class_ref
-                    references class
+                    references class,
+            ontology_id bigserial
+                constraint attribute_ontology_ref
+                    references ontology
         );
 
         create table if not exists attribute_value
@@ -33,21 +36,27 @@ $$
             instance_id  bigserial
                 constraint attribute_value_instance_ref
                     references instance,
-            value        text
+            value        text,
+            ontology_id  bigserial
+                constraint attribute_value_ontology_ref
+                    references ontology
         );
 
         create table if not exists relation
         (
-            id               bigserial not null
+            id          bigserial not null
                 constraint relation_pkey
                     primary key,
-            name             text unique,
-            domain_id        bigserial
+            name        text unique,
+            domain_id   bigserial
                 constraint relation_domain_ref
                     references class,
-            range_id         bigserial
+            range_id    bigserial
                 constraint relation_range_ref
-                    references class
+                    references class,
+            ontology_id bigserial
+                constraint relation_ontology_ref
+                    references ontology
         );
 
         create table if not exists relation_instance
@@ -63,7 +72,10 @@ $$
                     references instance,
             range_id    bigserial
                 constraint relation_instance_range_ref
-                    references instance
+                    references instance,
+            ontology_id bigserial
+                constraint relation_instance_ontology_ref
+                    references ontology
         );
 
     EXCEPTION

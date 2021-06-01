@@ -39,4 +39,8 @@ public class AttributeValueEntity {
     private InstanceEntity instance;
 
     private String value;
+
+    @ManyToOne
+    @JoinColumn(name = "ontology_id")
+    private OntologyEntity ontology;
 }

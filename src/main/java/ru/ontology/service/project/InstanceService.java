@@ -29,20 +29,20 @@ public class InstanceService {
 
     @Transactional
     public void createInstance(InstanceCreateUpdateDto dto) {
-        ClassEntity classEntity = classRepository.findById(dto.getClassTypeId()).orElse(null);
+        List<ClassEntity> classEntities = classRepository.findAllByNames(dto.getClassNames());
         instanceRepository.save(InstanceEntity.builder()
                 .name(dto.getName())
-                .typeClass(classEntity)
+                .classes(classEntities)
                 .build());
     }
 
     @Transactional
     public void updateInstance(InstanceCreateUpdateDto dto) {
-        ClassEntity classEntity = classRepository.findById(dto.getClassTypeId()).orElse(null);
+        List<ClassEntity> classEntities = classRepository.findAllByNames(dto.getClassNames());
         instanceRepository.save(InstanceEntity.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                .typeClass(classEntity)
+                .classes(classEntities)
                 .build());
     }
 
@@ -54,7 +54,7 @@ public class InstanceService {
     @Transactional(readOnly = true)
     public List<InstanceViewDto> getInstanceList(Long ontologyId) {
         List<InstanceEntity> instancesOfOntology = instanceRepository.findAll().stream()
-                .filter(x -> x.getTypeClass().getOntology().getId().equals(ontologyId))
+                .filter(x -> x.getOntology().getId().equals(ontologyId))
                 .collect(Collectors.toList());
 
         return instancesOfOntology.stream()
@@ -73,7 +73,9 @@ public class InstanceService {
         return new InstanceViewDto()
                 .id(instance.getId())
                 .name(instance.getName())
-                .classType(instance.getTypeClass().getName())
+                .classType(instance.getClasses().stream()
+                        .map(ClassEntity::getName)
+                        .collect(Collectors.joining(", ")))
                 .attributes(attributeValueRepository.findAll().stream()
                         .filter(y -> y.getInstance().getId().equals(instance.getId()))
                         .map(y -> new AttributeValueViewDto()

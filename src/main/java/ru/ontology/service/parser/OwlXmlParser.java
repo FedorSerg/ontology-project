@@ -64,28 +64,28 @@ public class OwlXmlParser {
                     // parsing classes
                     Optional<Element> classElement = ofNullable((Element) element.getElementsByTagName(CLASS).item(0));
                     classElement.ifPresent(x -> {
-                        String className = x.getAttribute(IRI);
+                        String className = x.getAttribute(IRI).replace("#", "");
                         classes.add(ClassDto.builder().name(className).build());
                     });
 
                     // parsing relations
                     Optional<Element> objectPropertyElement = ofNullable((Element) element.getElementsByTagName(OBJECT_PROPERTY).item(0));
                     objectPropertyElement.ifPresent(x -> {
-                        String relationName = x.getAttribute(IRI);
+                        String relationName = x.getAttribute(IRI).replace("#", "");
                         relations.add(RelationDto.builder().name(relationName).build());
                     });
 
                     // parsing attributes
                     Optional<Element> dataPropertyElement = ofNullable((Element) element.getElementsByTagName(DATA_PROPERTY).item(0));
                     dataPropertyElement.ifPresent(x -> {
-                        String attributeName = x.getAttribute(IRI);
+                        String attributeName = x.getAttribute(IRI).replace("#", "");
                         attributes.add(AttributeDto.builder().name(attributeName).build());
                     });
 
                     // parsing instances
                     Optional<Element> instanceElement = ofNullable((Element) element.getElementsByTagName("NamedIndividual").item(0));
                     instanceElement.ifPresent(x -> {
-                        String instanceName = x.getAttribute(IRI);
+                        String instanceName = x.getAttribute(IRI).replace("#", "");
                         instances.add(InstanceDto.builder().name(instanceName).build());
                     });
                 }
@@ -110,14 +110,14 @@ public class OwlXmlParser {
 
                     // parsing subclasses
                     if (firstClassElement.isPresent() && secondClassElement.isPresent() && objectProperty.isEmpty()) {
-                        String subclassIri = firstClassElement.get().getAttribute(IRI);
+                        String subclassIri = firstClassElement.get().getAttribute(IRI).replace("#", "");
                         ClassDto subclass = ontology.getClasses().stream()
-                                .filter(x -> x.getName().equals(firstClassElement.get().getAttribute(IRI)))
+                                .filter(x -> x.getName().equals(firstClassElement.get().getAttribute(IRI).replace("#", "")))
                                 .findFirst()
                                 .orElseThrow(() -> new NoSuchElementException("No class was found for subclass by name " + subclassIri));
-                        String rangeIri = secondClassElement.get().getAttribute(IRI);
+                        String rangeIri = secondClassElement.get().getAttribute(IRI).replace("#", "");
                         ClassDto superclass = ontology.getClasses().stream()
-                                .filter(x -> x.getName().equals(secondClassElement.get().getAttribute(IRI)))
+                                .filter(x -> x.getName().equals(secondClassElement.get().getAttribute(IRI).replace("#", "")))
                                 .findFirst()
                                 .orElseThrow(() -> new NoSuchElementException("No class was found for superclass by name " + rangeIri));
                         List<ClassDto> superclassList = subclass.getSuperclasses();
@@ -142,8 +142,8 @@ public class OwlXmlParser {
                     Optional<Element> domainElement = ofNullable((Element) element.getElementsByTagName(CLASS).item(0));
 
                     if (propertyElement.isPresent() && domainElement.isPresent()) {
-                        String domainIri = domainElement.get().getAttribute(IRI);
-                        String propertyIri = propertyElement.get().getAttribute(IRI);
+                        String domainIri = domainElement.get().getAttribute(IRI).replace("#", "");
+                        String propertyIri = propertyElement.get().getAttribute(IRI).replace("#", "");
 
                         ClassDto domain = ontology.getClasses().stream()
                                 .filter(x -> x.getName().equals(domainIri))
@@ -160,8 +160,8 @@ public class OwlXmlParser {
                     Optional<Element> datatypeElement = ofNullable((Element) element.getElementsByTagName("Datatype").item(0));
 
                     if (propertyElement.isPresent() && datatypeElement.isPresent()) {
-                        String propertyIri = propertyElement.get().getAttribute(IRI);
-                        String datatypeIri = datatypeElement.get().getAttribute("abbreviatedIRI");
+                        String propertyIri = propertyElement.get().getAttribute(IRI).replace("#", "");
+                        String datatypeIri = datatypeElement.get().getAttribute("abbreviatedIRI").replace("xsd:", "");
 
                         AttributeDto attribute = ontology.getAttributes().stream()
                                 .filter(x -> x.getName().equals(propertyIri))
@@ -188,8 +188,8 @@ public class OwlXmlParser {
                     Optional<Element> datatypeElement = ofNullable((Element) element.getElementsByTagName("Datatype").item(0));
 
                     if (propertyElement.isPresent() && datatypeElement.isPresent()) {
-                        String propertyIri = propertyElement.get().getAttribute(IRI);
-                        String datatypeIri = datatypeElement.get().getAttribute("abbreviatedIRI");
+                        String propertyIri = propertyElement.get().getAttribute(IRI).replace("#", "");
+                        String datatypeIri = datatypeElement.get().getAttribute("abbreviatedIRI").replace("xsd:", "");
 
                         AttributeDto attribute = ontology.getAttributes().stream()
                                 .filter(x -> x.getName().equals(propertyIri))
@@ -216,8 +216,8 @@ public class OwlXmlParser {
                     Optional<Element> domainElement = ofNullable((Element) element.getElementsByTagName(CLASS).item(0));
 
                     if (propertyElement.isPresent() && domainElement.isPresent()) {
-                        String domainIri = domainElement.get().getAttribute(IRI);
-                        String propertyIri = propertyElement.get().getAttribute(IRI);
+                        String domainIri = domainElement.get().getAttribute(IRI).replace("#", "");
+                        String propertyIri = propertyElement.get().getAttribute(IRI).replace("#", "");
 
                         ClassDto domain = ontology.getClasses().stream()
                                 .filter(x -> x.getName().equals(domainIri))
@@ -244,8 +244,8 @@ public class OwlXmlParser {
                     Optional<Element> rangeElement = ofNullable((Element) element.getElementsByTagName(CLASS).item(0));
 
                     if (propertyElement.isPresent() && rangeElement.isPresent()) {
-                        String rangeIri = rangeElement.get().getAttribute(IRI);
-                        String propertyIri = propertyElement.get().getAttribute(IRI);
+                        String rangeIri = rangeElement.get().getAttribute(IRI).replace("#", "");
+                        String propertyIri = propertyElement.get().getAttribute(IRI).replace("#", "");
 
                         ClassDto range = ontology.getClasses().stream()
                                 .filter(x -> x.getName().equals(rangeIri))
@@ -273,8 +273,8 @@ public class OwlXmlParser {
                     Optional<Element> classElement = ofNullable((Element) element.getElementsByTagName(CLASS).item(0));
 
                     if (instanceElement.isPresent() && classElement.isPresent()) {
-                        String classIri = classElement.get().getAttribute(IRI);
-                        String instanceIri = instanceElement.get().getAttribute(IRI);
+                        String classIri = classElement.get().getAttribute(IRI).replace("#", "");
+                        String instanceIri = instanceElement.get().getAttribute(IRI).replace("#", "");
 
                         ClassDto classDto = ontology.getClasses().stream()
                                 .filter(x -> x.getName().equals(classIri))
@@ -303,9 +303,9 @@ public class OwlXmlParser {
                     Optional<Element> instanceRangeElement = ofNullable((Element) element.getElementsByTagName("NamedIndividual").item(1));
 
                     if (relationElement.isPresent() && instanceDomainElement.isPresent() && instanceRangeElement.isPresent()) {
-                        String relationIri = relationElement.get().getAttribute(IRI);
-                        String domainIri = instanceDomainElement.get().getAttribute(IRI);
-                        String rangeIri = instanceRangeElement.get().getAttribute(IRI);
+                        String relationIri = relationElement.get().getAttribute(IRI).replace("#", "");
+                        String domainIri = instanceDomainElement.get().getAttribute(IRI).replace("#", "");
+                        String rangeIri = instanceRangeElement.get().getAttribute(IRI).replace("#", "");
 
                         RelationDto relation = ontology.getRelations().stream()
                                 .filter(x -> x.getName().equals(relationIri))
@@ -344,9 +344,9 @@ public class OwlXmlParser {
                     Optional<Element> valueElement = ofNullable((Element) element.getElementsByTagName("Literal").item(0));
 
                     if (attributeElement.isPresent() && instanceElement.isPresent() && valueElement.isPresent()) {
-                        String attributeIri = attributeElement.get().getAttribute(IRI);
-                        String instanceIri = instanceElement.get().getAttribute(IRI);
-                        String value = valueElement.get().getTextContent();
+                        String attributeIri = attributeElement.get().getAttribute(IRI).replace("#", "");
+                        String instanceIri = instanceElement.get().getAttribute(IRI).replace("#", "");
+                        String value = valueElement.get().getTextContent().replace("$", "");
 
                         AttributeDto attribute = ontology.getAttributes().stream()
                                 .filter(x -> x.getName().equals(attributeIri))

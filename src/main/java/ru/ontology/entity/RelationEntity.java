@@ -41,4 +41,8 @@ public class RelationEntity {
     @ManyToOne
     @JoinColumn(name = "range_id")
     private ClassEntity range;
+
+    @ManyToOne
+    @JoinColumn(name = "ontology_id")
+    private OntologyEntity ontology;
 }
