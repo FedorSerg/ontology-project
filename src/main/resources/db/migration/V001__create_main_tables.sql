@@ -54,12 +54,22 @@ $$
 
         create table if not exists instance
         (
-            id       bigserial not null
+            id          bigserial not null
                 constraint instance_pkey
                     primary key,
-            name     text,
-            class_id bigserial
-                constraint instance_class_ref
+            name        text,
+            ontology_id bigserial
+                constraint instance_ontology_ref
+                    references ontology
+        );
+
+        create table if not exists instance_superclasses
+        (
+            instance_entity_id   bigserial
+                constraint inst_supcl_inst_ref
+                    references instance,
+            classes_id bigserial
+                constraint inst_supcl_supcl_ref
                     references class
         );
 

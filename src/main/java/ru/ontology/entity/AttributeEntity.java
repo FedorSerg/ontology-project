@@ -40,4 +40,8 @@ public class AttributeEntity {
 
     @Enumerated(EnumType.STRING)
     private AttributeRangeType range;
+
+    @ManyToOne
+    @JoinColumn(name = "ontology_id")
+    private OntologyEntity ontology;
 }

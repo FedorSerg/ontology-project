@@ -1,6 +1,7 @@
 package ru.ontology.service.project;
 
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.OntologyCreateUpdateDto;
 import org.openapitools.model.OntologyViewDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import ru.ontology.service.parser.OwlXmlParser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -42,6 +44,29 @@ public class OntologyService {
     private final RelationRepository relationRepository;
     private final RelationInstanceRepository relationInstanceRepository;
 
+    @Transactional
+    public Long createOntology(OntologyCreateUpdateDto dto) {
+        return ontologyRepository.save(
+                OntologyEntity.builder()
+                        .name(dto.getName())
+                        .build())
+                .getId();
+    }
+
+    @Transactional
+    public void updateOntology(OntologyCreateUpdateDto dto) {
+        ontologyRepository.save(
+                OntologyEntity.builder()
+                        .id(dto.getId())
+                        .name(dto.getName())
+                        .build());
+    }
+
+    @Transactional
+    public void deleteOntology(Long ontologyId) {
+        ontologyRepository.deleteById(ontologyId);
+    }
+
     @Transactional(readOnly = true)
     public List<OntologyViewDto> getOntologyList() {
         return ontologyRepository.findAll().stream()
@@ -50,6 +75,17 @@ public class OntologyService {
                         .name(x.getName())
                         .iri(x.getIri()))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public OntologyViewDto getOntologyById(Long ontologyId) {
+
+        OntologyEntity ontologyEntity = ontologyRepository.findById(ontologyId).orElseThrow(
+                () -> new NoSuchElementException("No ontology found for id = " + ontologyId));
+        return new OntologyViewDto()
+                .id(ontologyEntity.getId())
+                .name(ontologyEntity.getName())
+                .iri(ontologyEntity.getIri());
     }
 
     @Transactional
@@ -106,6 +142,7 @@ public class OntologyService {
                         .domain(classRepository.findByName(x.getDomain().getName())
                                 .orElseThrow(NoSuchElementException::new))
                         .range(x.getRangeType())
+                        .ontology(ontologyWithId)
                         .build())
                 .collect(Collectors.toList());
         attributeRepository.saveAll(attributeEntities);
@@ -118,6 +155,7 @@ public class OntologyService {
                                 .orElseThrow(NoSuchElementException::new))
                         .range(classRepository.findByName(x.getRange().getName())
                                 .orElseThrow(NoSuchElementException::new))
+                        .ontology(ontologyWithId)
                         .build())
                 .collect(Collectors.toList());
         relationRepository.saveAll(relationEntities);
@@ -126,8 +164,9 @@ public class OntologyService {
         List<InstanceEntity> instanceEntities = ontologyDto.getInstances().stream()
                 .map(x -> InstanceEntity.builder()
                         .name(x.getName())
-                        .typeClass(classRepository.findByName(x.getClassType().getName())
-                                .orElseThrow(NoSuchElementException::new))
+                        .classes(Arrays.asList(classRepository.findByName(x.getClassType().getName())
+                                .orElseThrow(NoSuchElementException::new)))
+                        .ontology(ontologyWithId)
                         .build())
                 .collect(Collectors.toList());
         instanceRepository.saveAll(instanceEntities);
@@ -141,6 +180,7 @@ public class OntologyService {
                                 .orElseThrow(NoSuchElementException::new))
                         .range(instanceRepository.findByName(x.getRange().getName())
                                 .orElseThrow(NoSuchElementException::new))
+                        .ontology(ontologyWithId)
                         .build())
                 .collect(Collectors.toList());
         relationInstanceRepository.saveAll(relationInstanceEntities);
@@ -153,6 +193,7 @@ public class OntologyService {
                         .instance(instanceRepository.findByName(x.getInstance().getName())
                                 .orElseThrow(NoSuchElementException::new))
                         .value(x.getValue())
+                        .ontology(ontologyWithId)
                         .build())
                 .collect(Collectors.toList());
         attributeValueRepository.saveAll(attributeValueEntities);

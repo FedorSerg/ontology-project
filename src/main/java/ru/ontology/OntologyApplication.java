@@ -13,6 +13,6 @@ public class OntologyApplication {
 
     public static void main(final String[] args) {
         SpringApplication.run(OntologyApplication.class, args);
-        log.info("http://localhost:8080/swagger-ui.html");
+        log.info("http://localhost:8080/swagger-ui/");
     }
 }
